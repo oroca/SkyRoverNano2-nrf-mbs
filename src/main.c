@@ -47,7 +47,9 @@ static uint32_t flashPages;
 #define PAGE_SIZE 1024
 
 #define FLASH_BASE 0x00000000
-#define FLASH_SIZE (256*1024)
+//#define FLASH_SIZE (256*1024)
+#define FLASH_SIZE (128*1024)
+
 
 #define MBR_SIZE (4*1024)
 #define MBS_SIZE (4*1024)
@@ -172,6 +174,8 @@ void start_stm_dfu()
 int main() __attribute__ ((noreturn));
 int main()
 {
+  volatile int i;
+
   press = press_none;
 
   /* Lock flash for MBR and MBS */
@@ -238,8 +242,9 @@ int main()
   NRF_POWER->GPREGRET &= ~(0x03UL << 1);
   NRF_POWER->GPREGRET |= 0x80 | ((press&0x03UL)<<1);
 
+
   if (press != press_verylong) {
-    if(verify_flash_flags()) {
+	  if(verify_flash_flags()) {
       //fault();
       copy_flash();
     } else {
