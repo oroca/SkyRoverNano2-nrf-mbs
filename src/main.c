@@ -179,11 +179,14 @@ int main()
   press = press_none;
 
   /* Lock flash for MBR and MBS */
-  NRF_MPU->PROTENSET0 = 0x00000001UL;
-  NRF_MPU->PROTENSET1 = 0x80000000UL;
+  //NRF_MPU->PROTENSET0 = 0x00000001UL;
+  //NRF_MPU->PROTENSET1 = 0x80000000UL;
+  NRF_MPU->PROTENSET0 = 0x80000001UL;
+  NRF_MPU->PROTENSET1 = 0x00000000UL;
 
   nrf_gpio_cfg_output(LED_PIN);
   nrf_gpio_pin_set(LED_PIN);
+
 
   nrf_gpio_cfg_output(PM_VCCEN_PIN);
   nrf_gpio_pin_clear(PM_VCCEN_PIN);
@@ -192,6 +195,8 @@ int main()
 
   NRF_CLOCK->TASKS_HFCLKSTART = 1UL;
   while(!NRF_CLOCK->EVENTS_HFCLKSTARTED);
+
+
 
   // Start button timer
   NRF_TIMER0->PRESCALER = 7;   // Prescaler of 16, result frequency is 1MHz
@@ -213,6 +218,8 @@ int main()
     fault();
   flashPages = (*(uint32_t*)(BOOTLOADER_CONFIG))/1024;
 
+
+  //while(1);
 
   if (nrf_gpio_pin_read(BUTTON_PIN) == 0) {
     press = press_short;
