@@ -12,5 +12,5 @@ config.mk
 .settings
 
 #Nordic libs
-s110
-nrf51_sdk
+#s110
+#nrf51_sdk
